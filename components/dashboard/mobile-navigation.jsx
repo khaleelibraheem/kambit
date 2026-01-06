@@ -20,6 +20,7 @@ import {
   AlignRight,
   X,
   ChevronRight,
+  Ticket,
 } from "lucide-react";
 
 import {
@@ -39,6 +40,8 @@ const sidebarItems = [
     items: [
       { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { title: "Trade Crypto", href: "/dashboard/trade", icon: Zap },
+      { title: "Giftcards", href: "/dashboard/giftcards", icon: Ticket },
+
       {
         title: "Exchange Rates",
         href: "/dashboard/exchange-rates",
@@ -60,7 +63,11 @@ const sidebarItems = [
         href: "/dashboard/receive",
         icon: QrCode,
       },
-      { title: "Fund Wallet", href: "/dashboard/fund-account", icon: PlusCircle },
+      {
+        title: "Fund Wallet",
+        href: "/dashboard/fund-account",
+        icon: PlusCircle,
+      },
       { title: "Withdraw", href: "/dashboard/withdrawals", icon: Banknote },
       { title: "Transactions", href: "/dashboard/transactions", icon: History },
       { title: "Bank Accounts", href: "/dashboard/banks", icon: Landmark },
@@ -68,9 +75,7 @@ const sidebarItems = [
   },
   {
     group: "Account",
-    items: [
-      { title: "Profile", href: "/dashboard/profile", icon: User },
-    ],
+    items: [{ title: "Profile", href: "/dashboard/profile", icon: User }],
   },
 ];
 

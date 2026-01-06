@@ -17,6 +17,7 @@ import {
   SendHorizontal,
   QrCode,
   RefreshCcw,
+  Ticket,
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ const sidebarSections = [
     items: [
       { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { title: "Trade Crypto", href: "/dashboard/trade", icon: Zap },
+      { title: "Giftcards", href: "/dashboard/giftcards", icon: Ticket },
       { title: "Exchange Rates", href: "/dashboard/exchange-rates", icon: RefreshCcw },
       { title: "Convert", href: "/dashboard/convert", icon: ArrowRightLeft },
     ],
