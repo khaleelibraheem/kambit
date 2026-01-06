@@ -4,11 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-/**
- * Kambit Branding Logo
- * @param {string} className - Additional Tailwind classes
- * @param {boolean} iconOnly - Whether to hide the "Kambit" text
- */
 const Logo = ({ className = "", iconOnly = false }) => {
   return (
     <Link

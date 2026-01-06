@@ -15,7 +15,6 @@ import {
   History,
   Landmark,
   User,
-  Settings,
   ShieldCheck,
   AlignRight,
   X,
@@ -88,11 +87,10 @@ export function MobileNavigation({ user }) {
     setMounted(true);
   }, []);
 
-  // --- FIX: AUTO-CLOSE ON RESIZE ---
+  // AUTO-CLOSE ON RESIZE 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        // 1024 is the standard Tailwind 'lg' breakpoint
         setOpen(false);
       }
     };

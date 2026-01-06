@@ -8,16 +8,23 @@ const isPublicRoute = createRouteMatcher([
   "/about",
   "/services",
   "/faq",
-  "/manifest.json", // Add manifest.json to public routes
+  "/manifest.json",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
-  // Handle manifest.json specifically
+  const { userId } = await auth();
+
   if (request.nextUrl.pathname === "/manifest.json") {
     return NextResponse.rewrite(new URL("/manifest.json", request.url));
   }
 
-  // Handle other routes with authentication
+  
+  // If user is signed in and tries to access the landing page ("/"),
+  // redirect them to the dashboard.
+  if (userId && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   if (!isPublicRoute(request)) {
     await auth.protect();
   }
