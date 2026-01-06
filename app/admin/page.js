@@ -5,12 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Users,
   Activity,
-  ArrowUpRight,
-  ArrowDownRight,
   CircleDollarSign,
   FileCheck,
   RefreshCw,
-  History,
   FileText,
   TrendingUp,
   ShieldCheck,

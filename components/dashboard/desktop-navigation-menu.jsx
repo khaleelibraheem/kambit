@@ -11,7 +11,6 @@ import {
   History,
   Landmark,
   User,
-  Settings,
   ShieldCheck,
   ChevronRight,
   SendHorizontal,
@@ -21,7 +20,6 @@ import {
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 const sidebarSections = [
   {

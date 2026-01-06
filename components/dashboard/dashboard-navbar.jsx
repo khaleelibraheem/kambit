@@ -130,13 +130,6 @@ export function DashboardNavbar({ user }) {
                   </DropdownMenuItem>
                 </Link>
 
-                <Link href="/dashboard/settings">
-                  <DropdownMenuItem className="cursor-pointer rounded-xl py-2.5">
-                    <Settings className="h-4 w-4 mr-2 text-slate-400" />
-                    Security Settings
-                  </DropdownMenuItem>
-                </Link>
-
                 {user?.publicMetadata?.role === "admin" && (
                   <>
                     <DropdownMenuSeparator className="opacity-50" />

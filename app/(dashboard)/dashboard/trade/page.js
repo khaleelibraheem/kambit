@@ -3,21 +3,11 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Zap,
   ArrowRight,
-  ShieldCheck,
-  Landmark,
   Copy,
   Check,
   Info,
-  Wallet,
-  QrCode,
-  ArrowLeft,
   CheckCircle2,
-  History,
-  Banknote,
-  Building2,
-  Plus,
   AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -636,7 +626,7 @@ export default function TradePage() {
                             </p>
                           </div>
                         </div>
-                        <Link href="/dashboard/fund" className="block">
+                        <Link href="/dashboard/fund-account" className="block">
                           <Button className="w-full h-16 bg-slate-900 dark:bg-white dark:text-slate-900 font-bold text-lg rounded-2xl">
                             Fund Your Account
                           </Button>
