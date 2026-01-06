@@ -101,7 +101,7 @@ export default function FundAccountPage() {
       initial="hidden"
       animate="visible"
       variants={variants.container}
-      className="max-w-5xl mx-auto space-y-8 pb-20 px-4"
+      className="max-w-5xl mx-auto space-y-8 pb-20"
     >
       <motion.div variants={variants.item} className="space-y-2">
         <h1 className="font-heading text-3xl font-bold text-slate-900 dark:text-white tracking-tight">

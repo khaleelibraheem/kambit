@@ -63,7 +63,7 @@ export default function ReceivePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-20 px-4">
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
       {/* Header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-heading text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Receive Money</h1>

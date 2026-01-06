@@ -72,7 +72,7 @@ export default function SavedBanksPage() {
       variants={variants.container}
       initial="hidden"
       animate="visible"
-      className="max-w-4xl mx-auto space-y-6 pb-20 px-4"
+      className="max-w-4xl mx-auto space-y-6 pb-20"
     >
       {/* Header Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

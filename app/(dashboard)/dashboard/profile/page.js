@@ -123,7 +123,7 @@ export default function ProfilePage() {
       variants={variants.container}
       initial="hidden"
       animate="visible"
-      className="max-w-5xl mx-auto space-y-8 pb-20 px-4"
+      className="max-w-5xl mx-auto space-y-8 pb-20"
     >
       {/* Header & Identity Section */}
       <motion.div

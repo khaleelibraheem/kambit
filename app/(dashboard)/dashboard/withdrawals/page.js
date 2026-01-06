@@ -107,7 +107,6 @@ export default function WithdrawalsPage() {
       if (!newBankData.bankName || newBankData.accountNumber.length < 10) {
         return toast.error("Please provide valid new bank details");
       }
-      // Add to context if you want it to persist during this session
       addBankAccount({ ...newBankData, accountType: "Savings" });
     }
 
@@ -138,7 +137,7 @@ export default function WithdrawalsPage() {
       initial="hidden"
       animate="visible"
       variants={variants.container}
-      className="max-w-5xl mx-auto space-y-8 pb-12 px-4"
+      className="max-w-5xl mx-auto space-y-8 pb-12"
     >
       {/* Header */}
       <motion.div variants={variants.item} className="space-y-1">

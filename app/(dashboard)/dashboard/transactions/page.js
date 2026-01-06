@@ -119,7 +119,7 @@ export default function TransactionsPage() {
       initial="hidden"
       animate="visible"
       variants={variants.container}
-      className="max-w-6xl mx-auto space-y-8 pb-20 px-4"
+      className="max-w-6xl mx-auto space-y-8 pb-20"
     >
       {/* Header Section */}
       <motion.div

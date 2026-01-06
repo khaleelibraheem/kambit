@@ -41,7 +41,7 @@ import { toast } from "sonner";
 import { formatNumberWithCommas, parseFormattedNumber } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import staticRates from "@/lib/mock-data/static-rates";
-import { Html5Qrcode } from "html5-qrcode"; // Switched to Html5Qrcode for better control
+import { Html5Qrcode } from "html5-qrcode";
 
 const ASSET_CONFIG = {
   NGN: { symbol: "₦", name: "Nigerian Naira", precision: 2 },
@@ -54,7 +54,7 @@ const ASSET_CONFIG = {
 export default function SendPage() {
   const router = useRouter();
   const { balances, handleWithdrawal } = useBanking();
-  const scannerRef = useRef(null); // Added to track scanner instance
+  const scannerRef = useRef(null);
 
   const [selectedAsset, setSelectedAsset] = useState("NGN");
   const [amount, setAmount] = useState("");
@@ -77,12 +77,11 @@ export default function SendPage() {
   const rate = staticRates[selectedAsset]?.NGN || 0;
   const nairaValue = selectedAsset === "NGN" ? numAmount : numAmount * rate;
 
-  // --- FIXED QR SCANNER LOGIC ---
+  // --- QR SCANNER LOGIC ---
   useEffect(() => {
     let html5QrCode;
 
     if (isScannerOpen) {
-      // Small delay to ensure the "reader" ID exists in the DOM after Framer Motion starts
       const timer = setTimeout(() => {
         html5QrCode = new Html5Qrcode("reader");
         scannerRef.current = html5QrCode;
@@ -99,7 +98,7 @@ export default function SendPage() {
 
               setCryptoDetails((prev) => ({ ...prev, address: cleanAddress }));
               toast.success("Wallet address scanned!");
-              handleCloseScanner(); // Properly close
+              handleCloseScanner(); 
             },
             () => {
               /* ignore silent errors */
@@ -156,7 +155,7 @@ export default function SendPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-20 px-4">
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
       {/* Header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-heading text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
