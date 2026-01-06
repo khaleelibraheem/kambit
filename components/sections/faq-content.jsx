@@ -8,56 +8,55 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-// app/faq/page.js
 const faqCategories = [
   {
-    title: "Exchange Rates & Fees",
+    title: "Trading & Market Rates",
     questions: [
       {
-        question: "How are your exchange rates calculated?",
-        answer: "Our exchange rates are based on real-time market rates with a small spread. We update our rates every second to ensure you get the most current rates for all five supported currencies (USD, GBP, EUR, NGN, INR)."
+        question: "How are Kambit's exchange rates determined?",
+        answer: "Our rates are pulled in real-time from global liquidity providers and adjusted for the local Naira market. We offer some of the most competitive spreads in Nigeria for BTC, USDT, ETH, and SOL."
       },
       {
-        question: "What fees do you charge?",
-        answer: "We charge a small spread on the exchange rate, typically ranging from 0.1% to 0.5% depending on the currency pair. There are no hidden fees or additional charges."
+        question: "Are there hidden fees when buying or selling?",
+        answer: "No. Kambit pride itself on transparency. The price you see during your trade is the price you pay. We incorporate a small spread to cover operational costs, with no hidden service charges."
       },
       {
-        question: "Why do exchange rates fluctuate?",
-        answer: "Exchange rates change constantly due to various factors including market supply and demand, economic indicators, political events, and global financial conditions."
+        question: "Why do crypto prices change so quickly?",
+        answer: "Digital assets are traded 24/7 globally. Prices fluctuate based on market supply, demand, and global economic news. We provide live updates every minute to ensure you trade at the most accurate price."
       }
     ]
   },
   {
-    title: "Transfers & Processing",
+    title: "Deposits & Withdrawals",
     questions: [
       {
-        question: "How long do transfers take?",
-        answer: "Currency exchanges between our supported currencies are instant. Bank transfers for withdrawals typically take 1-2 business days depending on the destination bank and currency."
+        question: "How long does it take to get my Naira after selling?",
+        answer: "Settlements on Kambit are designed to be instant. Once your trade is confirmed, the Naira is typically processed and sent to your linked bank account in under 5 minutes."
       },
       {
-        question: "Which currencies do you support?",
-        answer: "We currently support five major currencies: US Dollar (USD), British Pound (GBP), Euro (EUR), Nigerian Naira (NGN), and Indian Rupee (INR)."
+        question: "Which digital assets can I trade on Kambit?",
+        answer: "Currently, you can buy and sell Bitcoin (BTC), Tether (USDT), Ethereum (ETH), and Solana (SOL). We are constantly evaluating new assets to add to our ecosystem."
       },
       {
-        question: "Is there a minimum or maximum exchange amount?",
-        answer: "Minimum exchange amount is equivalent to $10 USD in any currency. Maximum amounts vary by currency pair and account verification level."
+        question: "What are the minimum and maximum trade limits?",
+        answer: "The minimum trade amount is the equivalent of $10 USD. Maximum daily limits depend on your account verification (KYC) level, designed to ensure platform security."
       }
     ]
   },
   {
-    title: "Account & Security",
+    title: "Security & Verification",
     questions: [
       {
-        question: "How do you protect my funds?",
-        answer: "We use bank-grade encryption, two-factor authentication, and maintain segregated accounts for client funds. All transactions are monitored 24/7 for suspicious activity."
+        question: "How secure are my digital assets on Kambit?",
+        answer: "We use a combination of institutional-grade cold storage, multi-signature wallets, and end-to-end encryption. Your funds are protected by the same security protocols used by global financial institutions."
       },
       {
-        question: "What documents do I need to verify my account?",
-        answer: "Basic verification requires government-issued ID and proof of address. Business accounts may require additional documentation."
+        question: "What is required for account verification (KYC)?",
+        answer: "To ensure compliance and security, we require a government-issued ID and a quick liveness check. This process is automated and usually takes less than 2 minutes to complete."
       },
       {
-        question: "Can I hold multiple currencies in my account?",
-        answer: "Yes, you can hold all five supported currencies (USD, GBP, EUR, NGN, INR) in your account simultaneously and exchange between them instantly."
+        question: "Can I hold both Crypto and Naira in my Kambit wallet?",
+        answer: "Yes. Your Kambit account features a multi-asset wallet where you can securely hold your digital coins and your Naira balance simultaneously, making it easy to trade whenever the market is right."
       }
     ]
   }
@@ -85,12 +84,12 @@ export default function FAQContent() {
                   <AccordionItem
                     key={index}
                     value={`item-${categoryIndex}-${index}`}
-                    className="border border-gray-200 dark:border-gray-800 rounded-lg px-6"
+                    className="border border-gray-200 dark:border-gray-800 rounded-lg px-6 bg-gray-50/50 dark:bg-gray-800/30"
                   >
-                    <AccordionTrigger className="text-left text-gray-900 dark:text-white hover:no-underline">
+                    <AccordionTrigger className="text-left text-gray-900 dark:text-white font-medium hover:no-underline py-4">
                       {item.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-600 dark:text-gray-300">
+                    <AccordionContent className="text-gray-600 dark:text-gray-300 pb-4 leading-relaxed">
                       {item.answer}
                     </AccordionContent>
                   </AccordionItem>

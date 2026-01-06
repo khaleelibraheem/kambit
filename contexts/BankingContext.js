@@ -1,95 +1,91 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const BankingContext = createContext({});
 
-// Initial bank accounts for testing
 const initialBankAccounts = [
   {
     id: 1,
-    bankName: "Chase Bank",
-    accountNumber: "****1234",
+    bankName: "GTBank",
+    accountNumber: "0123456789",
     accountType: "Savings",
   },
   {
     id: 2,
-    bankName: "Bank of America",
-    accountNumber: "****5678",
+    bankName: "Zenith Bank",
+    accountNumber: "9876543210",
     accountType: "Checking",
-  },
-  {
-    id: 3,
-    bankName: "Wells Fargo",
-    accountNumber: "****9012",
-    accountType: "Savings",
   },
 ];
 
 export function BankingProvider({ children }) {
-  // Balances state with initial values from your balance cards
   const [balances, setBalances] = useState({
-    USD: 0.00,
-    GBP: 0.00,
-    EUR: 0.00,
     NGN: 0.00,
-    INR: 0.00,
+    USDT: 0.00,
+    BTC: 0.000000,
+    ETH: 0.000000,
+    SOL: 0.0000,
   });
 
   const [bankAccounts, setBankAccounts] = useState(initialBankAccounts);
   const [transactions, setTransactions] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Function to handle funding
-  const handleFunding = (amount, currency) => {
+  // Load from localStorage
+  useEffect(() => {
+    try {
+      const savedBalances = localStorage.getItem("kambit_balances");
+      const savedAccounts = localStorage.getItem("kambit_accounts");
+      const savedTransactions = localStorage.getItem("kambit_txs");
+
+      if (savedBalances) setBalances(JSON.parse(savedBalances));
+      if (savedAccounts) setBankAccounts(JSON.parse(savedAccounts));
+      if (savedTransactions) setTransactions(JSON.parse(savedTransactions));
+    } catch (error) {
+      console.error("Failed to load banking state:", error);
+    } finally {
+      setIsInitialized(true);
+    }
+  }, []);
+
+  // Save to localStorage
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem("kambit_balances", JSON.stringify(balances));
+      localStorage.setItem("kambit_accounts", JSON.stringify(bankAccounts));
+      localStorage.setItem("kambit_txs", JSON.stringify(transactions));
+    }
+  }, [balances, bankAccounts, transactions, isInitialized]);
+
+  const handleFunding = (amount, asset) => {
+    const numAmount = parseFloat(amount);
     setBalances((prev) => ({
       ...prev,
-      [currency]: prev[currency] + parseFloat(amount),
+      [asset]: Number((prev[asset] + numAmount).toFixed(8)),
     }));
 
-    // Add to transactions history
-    setTransactions((prev) => [
-      {
-        id: Date.now(),
-        type: "credit",
-        amount: parseFloat(amount),
-        currency,
-        date: new Date(),
-        status: "completed",
-      },
-      ...prev,
-    ]);
   };
 
-  // Function to handle withdrawal
-const handleWithdrawal = (amount, currency) => {
-  const withdrawalAmount = parseFloat(amount);
+  const handleWithdrawal = (amount, asset) => {
+    const withdrawalAmount = parseFloat(amount);
+    if (balances[asset] >= withdrawalAmount) {
+      setBalances((prev) => ({
+        ...prev,
+        [asset]: Number((prev[asset] - withdrawalAmount).toFixed(8)),
+      }));
+      return true;
+    }
+    return false;
+  };
 
-  if (balances[currency] >= withdrawalAmount) {
-    setBalances((prev) => ({
-      ...prev,
-      [currency]: Number((prev[currency] - withdrawalAmount).toFixed(2)),
-    }));
-
-    setTransactions((prev) => [
-      {
-        id: Date.now(),
-        type: "debit",
-        amount: withdrawalAmount,
-        currency,
-        date: new Date(),
-        status: "completed",
-      },
-      ...prev,
-    ]);
-
-    return true;
-  }
-  return false;
-};
-
-  // Function to add a new bank account
   const addBankAccount = (bankAccount) => {
     setBankAccounts((prev) => [...prev, { id: Date.now(), ...bankAccount }]);
+  };
+
+  // --- Function to remove a bank account ---
+  const removeBankAccount = (id) => {
+    setBankAccounts((prev) => prev.filter((bank) => bank.id !== id));
   };
 
   return (
@@ -101,6 +97,8 @@ const handleWithdrawal = (amount, currency) => {
         handleFunding,
         handleWithdrawal,
         addBankAccount,
+        removeBankAccount,
+        isInitialized,
       }}
     >
       {children}

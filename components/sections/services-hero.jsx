@@ -1,22 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Globe, Shield, Zap } from "lucide-react";
+import { ArrowRight, Coins, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const highlights = [
   {
-    icon: Globe,
-    text: "5 Major Currencies",
+    icon: Coins,
+    text: "Top Digital Assets",
   },
   {
     icon: Shield,
-    text: "Secure Transfers",
+    text: "Secure Cold Storage",
   },
   {
     icon: Zap,
-    text: "Instant Exchange",
+    text: "Instant Settlements",
   },
 ];
 
@@ -33,11 +33,11 @@ export default function ServicesHero() {
           className="max-w-4xl mx-auto text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Premium Currency Exchange Services
+            Premium Digital Asset Trading
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Experience seamless currency exchange between USD, GBP, EUR, NGN,
-            and INR with competitive rates and instant processing.
+            Experience the fastest way to buy and sell BTC, USDT, ETH, and SOL in Nigeria. 
+            Enjoy competitive market rates and instant Naira settlements.
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-12">
@@ -60,7 +60,7 @@ export default function ServicesHero() {
             asChild
           >
             <Link href="/sign-up">
-              Start Exchanging <ArrowRight className="ml-2 h-4 w-4" />
+              Start Trading <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </motion.div>

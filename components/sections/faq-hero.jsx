@@ -18,13 +18,13 @@ export default function FAQHero() {
           transition={{ duration: 0.5 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            Frequently Asked Questions
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            How can we help you?
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Find answers to common questions about our services, transfers, and
-            more. If you can&apos;t find what you&apos;re looking for, feel free to
-            contact our support team.
+            Find answers to common questions about trading on Kambit, asset security, 
+            and instant Naira settlements. If you can&apos;t find what you&apos;re 
+            looking for, our support team is available 24/7.
           </p>
         </motion.div>
       </div>

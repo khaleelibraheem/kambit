@@ -21,6 +21,6 @@ export function useHistoricalRates(baseCurrency, targetCurrency, days = 30) {
       Promise.resolve(
         generateHistoricalData(baseCurrency, targetCurrency, days)
       ),
-    staleTime: Infinity, // Mock data doesn't need to refresh
+    staleTime: Infinity,
   });
 }

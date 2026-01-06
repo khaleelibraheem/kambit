@@ -2,134 +2,136 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, ShieldCheck } from "lucide-react";
-import { sidebarItems } from "@/config/navigation";
+import {
+  LayoutDashboard,
+  Zap,
+  ArrowRightLeft,
+  PlusCircle,
+  Banknote,
+  History,
+  Landmark,
+  User,
+  Settings,
+  ShieldCheck,
+  ChevronRight,
+  SendHorizontal,
+  QrCode,
+  RefreshCcw,
+} from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 
-const NavItem = ({ item, isActive, onClick }) => (
-  <Link
-    href={item.href}
-    onClick={onClick}
-    className={cn(
-      "group flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-150 hover:bg-gray-100 dark:hover:bg-gray-800",
-      isActive && "bg-indigo-50 dark:bg-indigo-950"
-    )}
-  >
-    <div className="flex items-center gap-x-3">
+const sidebarSections = [
+  {
+    group: "Trading",
+    items: [
+      { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { title: "Trade Crypto", href: "/dashboard/trade", icon: Zap },
+      { title: "Exchange Rates", href: "/dashboard/exchange-rates", icon: RefreshCcw },
+      { title: "Convert", href: "/dashboard/convert", icon: ArrowRightLeft },
+    ],
+  },
+  {
+    group: "Wallet",
+    items: [
+      { title: "Send", href: "/dashboard/send", icon: SendHorizontal },
+      { title: "Receive", href: "/dashboard/receive", icon: QrCode },
+      { title: "Fund Wallet", href: "/dashboard/fund-account", icon: PlusCircle },
+      { title: "Withdraw", href: "/dashboard/withdrawals", icon: Banknote },
+      { title: "Transactions", href: "/dashboard/transactions", icon: History },
+    ],
+  },
+  {
+    group: "Account",
+    items: [
+      { title: "Bank Accounts", href: "/dashboard/banks", icon: Landmark },
+      { title: "Profile", href: "/dashboard/profile", icon: User },
+    ],
+  },
+];
+
+const NavItem = ({ item }) => {
+  const pathname = usePathname();
+  const isActive =
+    pathname === item.href ||
+    (item.href !== "/dashboard" && pathname.startsWith(item.href));
+
+  return (
+    <Link
+      href={item.href}
+      className={cn(
+        "group flex items-center gap-3 p-3 rounded-xl transition-all duration-200 mx-2 mb-1",
+        isActive
+          ? "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 shadow-sm"
+          : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200"
+      )}
+    >
+      {/* Icon Container */}
       <div
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-lg transition-colors",
+          "p-2 rounded-lg transition-colors flex items-center justify-center",
           isActive
-            ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-400"
-            : "bg-gray-50 text-gray-500 dark:bg-gray-900 dark:text-gray-400 group-hover:bg-gray-100 dark:group-hover:bg-gray-800"
+            ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400"
+            : "bg-slate-100 dark:bg-slate-800 group-hover:bg-white dark:group-hover:bg-slate-700"
         )}
       >
-        <item.icon className="h-5 w-5" />
+        <item.icon className="w-4 h-4" />
       </div>
+
+      {/* Label */}
       <span
-        className={cn(
-          "text-sm font-medium",
-          isActive
-            ? "text-indigo-600 dark:text-indigo-400"
-            : "text-gray-700 dark:text-gray-300"
-        )}
+        className={cn("text-sm flex-1", isActive ? "font-medium" : "")}
       >
         {item.title}
       </span>
-    </div>
-    {item.isAdmin ? (
-      <Badge
-        variant="outline"
-        className="border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-400"
-      >
-        Admin
-      </Badge>
-    ) : (
+
+      {/* Indicator */}
       <ChevronRight
         className={cn(
-          "h-4 w-4",
-          isActive
-            ? "text-indigo-600 dark:text-indigo-400"
-            : "text-gray-400 dark:text-gray-600"
+          "w-3.5 h-3.5 transition-all duration-300",
+          isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
         )}
       />
-    )}
-  </Link>
-);
+    </Link>
+  );
+};
 
-const NavSection = ({ title, items, onItemClick, pathname }) => (
-  <NavigationMenuItem className="w-full">
-    <h3 className="mb-2 px-5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-      {title}
-    </h3>
-    <div className="space-y-1">
-      {items.map((item) => (
-        <NavItem
-          key={item.href}
-          item={item}
-          isActive={pathname === item.href}
-          onClick={onItemClick}
-        />
-      ))}
-    </div>
-  </NavigationMenuItem>
-);
-
-export function DesktopNavigationMenu({ onItemClick }) {
+export function DesktopNavigationMenu() {
   const { user } = useUser();
-  const pathname = usePathname();
-
-  const navigationItems = [...sidebarItems];
-  if (user?.publicMetadata?.role === "admin") {
-    navigationItems.push({
-      title: "Admin Dashboard",
-      href: "/admin",
-      icon: ShieldCheck,
-      isAdmin: true,
-    });
-  }
-
-  // Group navigation items
-  const mainNavItems = navigationItems.slice(0, 4);
-  const accountNavItems = navigationItems.slice(4, 8);
-  const settingsNavItems = navigationItems.slice(8);
 
   return (
-    <NavigationMenu
-      orientation="vertical"
-      className="max-w-none w-full items-start"
-    >
-      <NavigationMenuList className="flex-col w-full">
-        <div className="no-scrollbar h-[calc(100vh-4rem)] w-full overflow-y-auto">
-          <div className="space-y-4 p-2">
-            <NavSection
-              title="Main Navigation"
-              items={mainNavItems}
-              onItemClick={onItemClick}
-              pathname={pathname}
-            />
-            <NavSection
-              title="Account Management"
-              items={accountNavItems}
-              onItemClick={onItemClick}
-              pathname={pathname}
-            />
-            <NavSection
-              title="Settings & Profile"
-              items={settingsNavItems}
-              onItemClick={onItemClick}
-              pathname={pathname}
+    <div className="flex flex-col h-full py-6">
+      <div className="flex-1 space-y-8">
+        {sidebarSections.map((section) => (
+          <div key={section.group}>
+            <h3 className="font-heading px-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400/80 mb-3">
+              {section.group}
+            </h3>
+            <div className="space-y-1">
+              {section.items.map((item) => (
+                <NavItem key={item.href} item={item} />
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Admin Section */}
+        {user?.publicMetadata?.role === "admin" && (
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mx-4">
+            <h3 className="font-heading px-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400/80 mb-3">
+              System
+            </h3>
+            <NavItem
+              item={{
+                title: "Admin Terminal",
+                href: "/admin",
+                icon: ShieldCheck,
+              }}
             />
           </div>
-        </div>
-      </NavigationMenuList>
-    </NavigationMenu>
+        )}
+      </div>
+    </div>
   );
 }

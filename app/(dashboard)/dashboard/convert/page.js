@@ -1,18 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowDown,
-  ArrowUp,
-  RefreshCcw,
-  ArrowLeftRight,
+  Calculator,
   TrendingUp,
-  AlertCircle,
-  ArrowRight,
+  Info,
+  ChevronRight,
+  ArrowUpDown,
+  Zap,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -20,256 +19,203 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { formatNumberWithCommas } from "@/lib/utils";
-import staticRates from "@/lib/mock-data/static-rates";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import staticRates from "@/lib/mock-data/static-rates";
+import {
+  formatNumberWithCommas,
+  parseFormattedNumber,
+  formatNumber,
+} from "@/lib/utils";
 
-const supportedCurrencies = ["USD", "EUR", "GBP", "NGN", "INR"];
+const ASSET_CONFIG = {
+  NGN: { symbol: "₦", name: "Naira", precision: 2 },
+  USDT: { symbol: "₮", name: "Tether", precision: 2 },
+  BTC: { symbol: "₿", name: "Bitcoin", precision: 8 },
+  ETH: { symbol: "Ξ", name: "Ethereum", precision: 8 },
+  SOL: { symbol: "◎", name: "Solana", precision: 4 },
+};
 
-function QuickConvertPage() {
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
-  const [amount, setAmount] = useState("");
-  const [lastUpdated, setLastUpdated] = useState(null);
-  const [displayAmount, setDisplayAmount] = useState("");
-  const [loading, setLoading] = useState(false);
+const variants = {
+  container: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  },
+  item: {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0 },
+  },
+};
 
-  useEffect(() => {
-    setLastUpdated(new Date());
-  }, [fromCurrency, toCurrency]);
+export default function QuickConverterPage() {
+  const [fromAsset, setFromAsset] = useState("BTC");
+  const [toAsset, setToAsset] = useState("NGN");
+  const [amount, setAmount] = useState("1");
+  const [isFlipping, setIsFlipping] = useState(false);
 
-  const handleSwapCurrencies = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
-  };
+  const exchangeRate = staticRates[fromAsset]?.[toAsset] || 0;
+  const numAmount = parseFormattedNumber(amount || "0");
+  const estimatedOutput = numAmount * exchangeRate;
 
   const handleAmountChange = (e) => {
-    const value = e.target.value;
-    if (value === "") {
-      setAmount("");
-      setDisplayAmount("");
-      return;
+    const val = e.target.value.replace(/,/g, "");
+    if (val.includes(".")) {
+      const [whole, decimal] = val.split(".");
+      if (decimal && decimal.length > ASSET_CONFIG[fromAsset].precision) return;
     }
-
-    const rawValue = value.replace(/,/g, "");
-    if (isNaN(rawValue) || rawValue === "") return;
-
-    const formattedValue = formatNumberWithCommas(rawValue);
-    setDisplayAmount(formattedValue);
-    setAmount(rawValue);
+    setAmount(val.replace(/[^\d.]/g, ""));
   };
 
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setLastUpdated(new Date());
-    }, 500);
+  const flipAssets = () => {
+    setIsFlipping(true);
+    setFromAsset(toAsset);
+    setToAsset(fromAsset);
+    setTimeout(() => setIsFlipping(false), 400);
   };
-
-  const rate = staticRates[fromCurrency][toCurrency];
-  const convertedAmount = formatNumberWithCommas(
-    (parseFloat(amount || 0) * rate).toFixed(2)
-  );
 
   return (
-    <div className="min-h-screen">
+    <motion.div
+      variants={variants.container}
+      initial="hidden"
+      animate="visible"
+      className="max-w-2xl mx-auto space-y-6 md:space-y-8 pb-20 px-4"
+    >
+      {/* Header - Scaled for Mobile */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-3xl mx-auto space-y-8"
+        variants={variants.item}
+        className="text-center space-y-2 md:space-y-3"
       >
-        {/* Header Section */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-            Currency Converter
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-            Get real-time exchange rates for multiple currencies. Quick and easy
-            currency conversion at your fingertips.
-          </p>
-        </div>
+        <h1 className="font-heading text-2xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tighter">
+          Instant Converter
+        </h1>
+        <p className="text-slate-500 text-xs md:text-sm font-medium">
+          Get real-time market estimates instantly.
+        </p>
+      </motion.div>
 
-        {/* Main Converter Card */}
-        <Card className="shadow-lg border-0">
-          <CardHeader className="pb-0">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-indigo-500" />
-                <div>
-                  <CardTitle className="text-lg">Live Exchange Rate</CardTitle>
-                  {lastUpdated && (
-                    <CardDescription>
-                      Updated {lastUpdated.toLocaleTimeString()}
-                    </CardDescription>
-                  )}
-                </div>
+      <motion.div variants={variants.item}>
+        <Card className="border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-white dark:bg-slate-950">
+          <CardContent className="p-2 md:p-3 space-y-1.5">
+            {/* FROM SECTION */}
+            <div className="p-5 md:p-8 space-y-4 bg-slate-50 dark:bg-slate-900 rounded-[1.8rem] md:rounded-[2rem]">
+              <div className="flex justify-between items-center">
+                <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                  You Convert
+                </label>
+                <span className="text-[10px] font-bold text-indigo-600 uppercase">
+                  Rate: Fixed
+                </span>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleRefresh}
-                className={`${
-                  loading ? "animate-spin" : ""
-                } hover:bg-gray-100 dark:hover:bg-gray-700`}
+
+              <div className="flex items-center justify-between gap-2 md:gap-4">
+                <Input
+                  type="text"
+                  inputMode="decimal"
+                  value={formatNumberWithCommas(amount)}
+                  onChange={handleAmountChange}
+                  placeholder="0.00"
+                  className="h-auto p-0 border-none shadow-none bg-transparent text-2xl md:text-5xl font-heading font-bold focus-visible:ring-0 placeholder:text-slate-200 w-full"
+                />
+
+                <Select value={fromAsset} onValueChange={setFromAsset}>
+                  <SelectTrigger className="w-fit min-w-[90px] md:min-w-[110px] h-10 md:h-12 border-none shadow-lg bg-white dark:bg-slate-800 rounded-xl md:rounded-2xl px-3 md:px-4 gap-2 hover:scale-105 transition-transform">
+                    <span className="font-black text-sm md:text-lg">
+                      {fromAsset}
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-slate-200">
+                    {Object.keys(ASSET_CONFIG).map((code) => (
+                      <SelectItem key={code} value={code} className="font-bold">
+                        {code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* SWAP BUTTON - Responsive sizing */}
+            <div className="flex justify-center -my-7 md:-my-9 relative z-10">
+              <motion.button
+                onClick={flipAssets}
+                whileTap={{ scale: 0.9 }}
+                animate={isFlipping ? { rotate: 180 } : { rotate: 0 }}
+                className="p-3 md:p-4 bg-indigo-600 text-white rounded-xl md:rounded-2xl border-[6px] md:border-[8px] border-white dark:border-slate-950 shadow-xl hover:bg-indigo-700 transition-colors"
               >
-                <RefreshCcw className="h-4 w-4" />
-              </Button>
+                <ArrowUpDown className="w-5 h-5 md:w-6 h-6" />
+              </motion.button>
             </div>
-          </CardHeader>
 
-          <CardContent className="space-y-6 pt-6">
-            {/* Current Rate Display */}
-            <div className="flex items-center justify-between p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-              <div>
-                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                  1 {fromCurrency} = {formatNumberWithCommas(rate.toFixed(4))}{" "}
-                  {toCurrency}
-                </p>
-                <div className="flex items-center gap-2 mt-1">
-                  {Math.random() > 0.5 ? (
-                    <div className="flex items-center text-green-500">
-                      <ArrowUp className="h-4 w-4" />
-                      <span className="text-sm">+0.25%</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center text-red-500">
-                      <ArrowDown className="h-4 w-4" />
-                      <span className="text-sm">-0.13%</span>
-                    </div>
+            {/* TO SECTION */}
+            <div className="p-5 md:p-8 space-y-4 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 rounded-[1.8rem] md:rounded-[2rem]">
+              <div className="flex justify-between items-center">
+                <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                  Estimated Receive
+                </label>
+                <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-500">
+                  <TrendingUp size={12} /> Market
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 md:gap-4">
+                <div className="h-auto p-0 text-2xl md:text-5xl font-mono font-bold text-slate-900 dark:text-white truncate w-full">
+                  {formatNumber(
+                    estimatedOutput,
+                    ASSET_CONFIG[toAsset].precision
                   )}
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    vs yesterday
-                  </span>
                 </div>
+
+                <Select value={toAsset} onValueChange={setToAsset}>
+                  <SelectTrigger className="w-fit min-w-[90px] md:min-w-[110px] h-10 md:h-12 border border-slate-100 dark:border-slate-800 shadow-sm bg-slate-50 dark:bg-slate-900 rounded-xl md:rounded-2xl px-3 md:px-4 gap-2">
+                    <span className="font-black text-sm md:text-lg">
+                      {toAsset}
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl">
+                    {Object.keys(ASSET_CONFIG).map((code) => (
+                      <SelectItem key={code} value={code} className="font-bold">
+                        {code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            {/* Converter Section */}
-            <div className="space-y-8">
-              {/* From Currency */}
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  From
-                </label>
-                <div className="flex gap-3">
-                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {supportedCurrencies.map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    type="text"
-                    placeholder="Enter amount"
-                    value={displayAmount}
-                    onChange={handleAmountChange}
-                    className="flex-1 text-lg font-medium text-right"
-                  />
-                </div>
+            {/* FOOTER DETAILS */}
+            <div className="p-5 md:p-8 space-y-6">
+              <div className="flex items-center justify-between text-[10px] md:text-xs border-b border-slate-50 dark:border-slate-900 pb-4">
+                <span className="text-slate-400 font-bold uppercase tracking-widest">
+                  Current Rate
+                </span>
+                <span className="font-mono font-bold text-indigo-600">
+                  1 {fromAsset} ={" "}
+                  {formatNumber(exchangeRate, ASSET_CONFIG[toAsset].precision)}{" "}
+                  {toAsset}
+                </span>
               </div>
 
-              {/* Swap Button */}
-              <div className="relative flex justify-center">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200 dark:border-gray-700" />
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleSwapCurrencies}
-                  className="relative z-10 bg-white dark:bg-gray-800 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <ArrowLeftRight className="h-4 w-4" />
+              <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                <Info className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                <p className="text-[10px] md:text-[11px] text-slate-500 leading-relaxed font-medium">
+                  Estimated output includes{" "}
+                  <span className="text-slate-900 dark:text-white font-bold">
+                    0.0% fees
+                  </span>
+                  . Actual prices may vary by the time you execute.
+                </p>
+              </div>
+
+              <Link href="/dashboard/trade" className="block pt-2">
+                <Button className="w-full h-14 md:h-16 bg-slate-900 dark:bg-white dark:text-slate-900 active:scale-95 font-bold text-base md:text-lg rounded-2xl shadow-2xl transition-all group">
+                  Continue to Trade
+                  <ChevronRight className="ml-2 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </div>
-
-              {/* To Currency */}
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  To
-                </label>
-                <div className="flex gap-3">
-                  <Select value={toCurrency} onValueChange={setToCurrency}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {supportedCurrencies
-                        .filter((c) => c !== fromCurrency)
-                        .map((currency) => (
-                          <SelectItem key={currency} value={currency}>
-                            {currency}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    type="text"
-                    value={convertedAmount}
-                    readOnly
-                    className="flex-1 text-lg font-medium text-right bg-gray-50 dark:bg-gray-900"
-                  />
-                </div>
-              </div>
+              </Link>
             </div>
           </CardContent>
         </Card>
-
-        {/* Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link href="/send-money" className="block">
-            <Card className="h-full hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      Ready to Send Money?
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Transfer funds at this rate now
-                    </p>
-                  </div>
-                  <ArrowRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-indigo-500 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    About Our Rates
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    We source our rates from major financial markets, updated in
-                    real-time for accuracy.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
-
-export default QuickConvertPage;

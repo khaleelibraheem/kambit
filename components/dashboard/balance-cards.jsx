@@ -12,7 +12,7 @@ import {
   Download,
   RefreshCw,
   Wallet,
-  TrendingUp,
+  ArrowRightLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,220 +27,198 @@ import { useBanking } from "@/contexts/BankingContext";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const formatCurrency = (amount, currencyCode) => {
+const formatAsset = (amount, code) => {
   const isNegative = amount < 0;
-  const absoluteAmount = Math.abs(amount);
+  const absAmount = Math.abs(amount);
   let formatted;
 
-  if (currencyCode === "NGN") {
-    formatted = `₦${absoluteAmount.toLocaleString("en-US", {
+  if (code === "NGN") {
+    formatted = `₦${absAmount.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
+  } else if (code === "USDT") {
+    formatted = `${absAmount.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })} USDT`;
   } else {
-    try {
-      formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: currencyCode,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(absoluteAmount);
-    } catch (error) {
-      const fallbackSymbol =
-        { USD: "$", EUR: "€", GBP: "£", JPY: "¥" }[currencyCode] ||
-        `${currencyCode} `;
-      formatted = `${fallbackSymbol}${absoluteAmount.toFixed(2)}`;
-    }
+    formatted = `${absAmount.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 6,
+    })} ${code}`;
   }
 
-  if (isNegative) {
-    formatted = `-${formatted}`;
-  }
+  const value = isNegative ? `-${formatted}` : formatted;
+  const sizeClass = value.length > 15 ? "text-lg" : "text-xl";
 
-  const formattedLength = formatted.length;
-  const sizeClass =
-    formattedLength > 12
-      ? "text-lg"
-      : formattedLength > 9
-      ? "text-xl"
-      : "text-2xl";
-
-  return { value: formatted, sizeClass };
+  return { value, sizeClass };
 };
 
 export function BalanceCards() {
+  const [mounted, setMounted] = useState(false); // FIX: Hydration state
   const [showBalances, setShowBalances] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { balances } = useBanking();
 
   useEffect(() => {
+    setMounted(true); // FIX: Trigger client-side render
     const stored = localStorage.getItem("showBalances");
     if (stored !== null) setShowBalances(JSON.parse(stored));
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("showBalances", JSON.stringify(showBalances));
-  }, [showBalances]);
+    if (mounted) {
+      localStorage.setItem("showBalances", JSON.stringify(showBalances));
+    }
+  }, [showBalances, mounted]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 800));
     setIsRefreshing(false);
   };
 
-  const currencies = Object.entries(balances).map(([code, balance]) => {
-    const change =
-      parseFloat(
-        (((balance - balance * 0.977) / (balance * 0.977)) * 100).toFixed(1)
-      ) || 0;
+  const assets = Object.entries(balances).map(([code, balance]) => {
+    const mockChange = (Math.random() * 5 - 2).toFixed(1);
     return {
       code,
       balance,
-      change,
-      trend: balance >= balance * 0.977 ? "up" : "down",
+      change: Math.abs(mockChange),
+      trend: mockChange >= 0 ? "up" : "down",
     };
   });
 
+  // FIX: Prevent rendering until client-side state is ready
+  if (!mounted) return null;
+
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between px-4 sm:px-0">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between px-1">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-gradient-to-tr from-indigo-100 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/20">
+          <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800">
             <Wallet className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Your Balances
+            <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
+              Portfolio Balances
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {currencies.length} currencies available
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              {assets.length} Assets Tracked
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className={cn(
-              "flex-1 sm:flex-none transition-all duration-300",
-              isRefreshing && "opacity-50"
-            )}
+            className="flex-1 sm:flex-none h-9 bg-white dark:bg-slate-900"
           >
-            <RefreshCw
-              className={cn("h-4 w-4 mr-2", isRefreshing && "animate-spin")}
-            />
-            <span className="text-sm">Refresh</span>
+            <RefreshCw className={cn("h-3.5 w-3.5 mr-2", isRefreshing && "animate-spin")} />
+            Sync
           </Button>
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => setShowBalances(!showBalances)}
-            className="flex-1 sm:flex-none hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="flex-1 sm:flex-none h-9 bg-white dark:bg-slate-900"
           >
             {showBalances ? (
-              <>
-                <EyeOff className="h-4 w-4 mr-2" />
-                <span className="text-sm">Hide</span>
-              </>
+              <EyeOff className="h-3.5 w-3.5 mr-2" />
             ) : (
-              <>
-                <Eye className="h-4 w-4 mr-2" />
-                <span className="text-sm">Show</span>
-              </>
+              <Eye className="h-3.5 w-3.5 mr-2" />
             )}
+            {showBalances ? "Hide" : "Show"}
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:px-0">
-        <AnimatePresence mode="sync">
-          {currencies.map((currency, index) => (
-            <motion.div
-              key={currency.code}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2, delay: index * 0.05 }}
-            >
-              <Card className="overflow-hidden bg-white dark:bg-gray-900">
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md">
-                      <span className="font-mono text-sm font-medium">
-                        {currency.code}
-                      </span>
-                    </div>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4 text-gray-500" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <Link href="/dashboard/send-money">
-                          <DropdownMenuItem>
-                            <Send className="h-4 w-4 mr-2" />
-                            Send
-                          </DropdownMenuItem>
-                        </Link>
-                        <Link href="/dashboard/receive-money">
-                          <DropdownMenuItem>
-                            <Download className="h-4 w-4 mr-2" />
-                            Receive
-                          </DropdownMenuItem>
-                        </Link>
-                        <DropdownMenuSeparator />
-                        <Link href="/dashboard/convert">
-                          <DropdownMenuItem>
-                            <TrendingUp className="h-4 w-4 mr-2" />
-                            Convert
-                          </DropdownMenuItem>
-                        </Link>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-
-                  <div>
-                    <motion.p
-                      className={cn(
-                        "font-mono font-bold mb-3",
-                        formatCurrency(currency.balance, currency.code)
-                          .sizeClass
-                      )}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      {showBalances
-                        ? formatCurrency(currency.balance, currency.code).value
-                        : "••••••"}
-                    </motion.p>
-
-                    <div className="flex items-center gap-1.5">
-                      <div
-                        className={`flex items-center gap-1 text-sm ${
-                          currency.trend === "up"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {currency.trend === "up" ? (
-                          <ArrowUp className="h-3 w-3" />
-                        ) : (
-                          <ArrowDown className="h-3 w-3" />
-                        )}
-                        {currency.change}%
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <AnimatePresence mode="popLayout">
+          {assets.map((asset, index) => {
+            const { value, sizeClass } = formatAsset(asset.balance, asset.code);
+            return (
+              <motion.div
+                key={asset.code}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2, delay: index * 0.05 }}
+              >
+                <Card className="relative overflow-hidden group border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow-md transition-all duration-300">
+                  <div className="p-5">
+                    <div className="flex justify-between items-center mb-5">
+                      <div className="bg-slate-50 dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-700">
+                        <span className="font-bold text-[11px] tracking-tighter text-slate-600 dark:text-slate-300">
+                          {asset.code}
+                        </span>
                       </div>
-                      <span className="text-xs text-gray-400">•</span>
-                      <span className="text-xs text-gray-400">24h</span>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40">
+                          <Link href="/dashboard/transfer">
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Send className="h-3.5 w-3.5 mr-2" /> Send
+                            </DropdownMenuItem>
+                          </Link>
+                          <Link href="/dashboard/receive">
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Download className="h-3.5 w-3.5 mr-2" /> Receive
+                            </DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuSeparator />
+                          <Link href="/dashboard/trade">
+                            <DropdownMenuItem className="cursor-pointer font-semibold text-indigo-600">
+                              <ArrowRightLeft className="h-3.5 w-3.5 mr-2" /> Trade
+                            </DropdownMenuItem>
+                          </Link>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+
+                    <div className="space-y-1">
+                      <motion.h3
+                        className={cn(
+                          "font-heading font-bold tracking-tight text-slate-900 dark:text-white",
+                          sizeClass
+                        )}
+                      >
+                        {showBalances ? value : "••••••••"}
+                      </motion.h3>
+
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={cn(
+                            "flex items-center text-[10px] font-bold px-1.5 py-0.5 rounded",
+                            asset.trend === "up"
+                              ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20"
+                              : "text-rose-600 bg-rose-50 dark:bg-rose-900/20"
+                          )}
+                        >
+                          {asset.trend === "up" ? (
+                            <ArrowUp className="h-2.5 w-2.5 mr-0.5" />
+                          ) : (
+                            <ArrowDown className="h-2.5 w-2.5 mr-0.5" />
+                          )}
+                          {asset.change}%
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">
+                          24h Change
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
+                </Card>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
     </div>

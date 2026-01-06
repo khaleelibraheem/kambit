@@ -6,49 +6,49 @@ import { Scale, Shield, Clock, Users, Globe, LineChart } from "lucide-react";
 const values = [
   {
     icon: Scale,
-    title: "Fair Exchange Rates",
+    title: "Competitive Market Rates",
     description:
-      "We commit to providing competitive rates that reflect true market values, ensuring you get the best value for your exchanges.",
+      "We provide industry-leading rates for BTC, USDT, and more, ensuring you always get the best value when trading for Naira.",
     color: "text-blue-500",
     gradient: "from-blue-500/20 to-blue-500/0",
   },
   {
     icon: Shield,
-    title: "Regulatory Compliance",
+    title: "Compliance & Security",
     description:
-      "Licensed and regulated in all operating jurisdictions, ensuring your transactions are secure and compliant.",
+      "Operating with strict AML and KYC protocols, we ensure your assets are protected by institutional-grade security measures.",
     color: "text-indigo-500",
     gradient: "from-indigo-500/20 to-indigo-500/0",
   },
   {
     icon: Clock,
-    title: "24/7 Availability",
+    title: "Always-On Trading",
     description:
-      "Round-the-clock service for international currency exchange needs, because global finance never sleeps.",
+      "Digital assets never sleep. Our platform provides 24/7 access to liquidity, allowing you to trade whenever the market moves.",
     color: "text-green-500",
     gradient: "from-green-500/20 to-green-500/0",
   },
   {
     icon: Users,
-    title: "Customer First",
+    title: "Trader-Centric Support",
     description:
-      "Dedicated to providing exceptional service across all supported currencies with personalized support.",
+      "Our dedicated team provides personalized, human-led support to help you navigate the crypto market with absolute confidence.",
     color: "text-purple-500",
     gradient: "from-purple-500/20 to-purple-500/0",
   },
   {
     icon: Globe,
-    title: "Global Access",
+    title: "Digital Asset Gateway",
     description:
-      "Seamless currency exchange between USD, GBP, EUR, NGN, and INR, connecting major financial markets.",
+      "Kambit serves as the premier bridge between global crypto assets (USDT, BTC, SOL) and the local Naira economy.",
     color: "text-orange-500",
     gradient: "from-orange-500/20 to-orange-500/0",
   },
   {
     icon: LineChart,
-    title: "Market Excellence",
+    title: "Instant Execution",
     description:
-      "Stay ahead with real-time rates and market insights for informed currency exchange decisions.",
+      "Experience lightning-fast settlements and real-time price feeds designed for the speed of modern fintech.",
     color: "text-pink-500",
     gradient: "from-pink-500/20 to-pink-500/0",
   },
@@ -87,8 +87,8 @@ export default function CompanyValues() {
             Our Core Values
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Built on principles that prioritize security, efficiency, and
-            excellence in global currency exchange.
+            Kambit is built on principles of speed, transparency, and 
+            institutional-grade security for the Nigerian crypto community.
           </p>
         </motion.div>
 
@@ -99,7 +99,7 @@ export default function CompanyValues() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {values.map((value, index) => {
+          {values.map((value) => {
             const Icon = value.icon;
             return (
               <motion.div
@@ -140,17 +140,17 @@ export default function CompanyValues() {
         >
           <div>
             <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
-              5+
+              4+
             </div>
             <div className="text-gray-600 dark:text-gray-300">
-              Major Currencies
+              Top Crypto Assets
             </div>
           </div>
           <div>
             <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
-              100K+
+              10k+
             </div>
-            <div className="text-gray-600 dark:text-gray-300">Active Users</div>
+            <div className="text-gray-600 dark:text-gray-300">Active Traders</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">

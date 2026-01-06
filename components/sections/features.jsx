@@ -1,17 +1,16 @@
-// components/sections/features.js
 "use client";
 
 import { motion } from "framer-motion";
 import {
   Zap,
   Shield,
-  Globe,
-  Smartphone,
-  CreditCard,
-  PiggyBank,
+  Coins,
+  Wallet,
   ArrowRight,
   RefreshCcw,
   LineChart,
+  Lock,
+  History,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -19,50 +18,49 @@ import Link from "next/link";
 const features = [
   {
     icon: RefreshCcw,
-    title: "Real-Time Exchange Rates",
+    title: "Live Crypto Prices",
     description:
-      "Get live rates for USD, GBP, EUR, NGN, and INR updated every second from global forex markets.",
-    color: "text-yellow-500",
-    gradient: "from-yellow-500/20 to-yellow-500/0",
+      "Stay ahead with real-time price feeds for BTC, USDT, ETH, and SOL, pegged accurately to the current Naira market.",
+    color: "text-amber-500",
+    gradient: "from-amber-500/20 to-amber-500/0",
   },
   {
     icon: Zap,
-    title: "Instant Transfers",
+    title: "Instant Buy & Sell",
     description:
-      "Execute currency exchanges instantly between any of our supported currencies with immediate settlement.",
+      "No more waiting for P2P matches. Purchase or liquidate your crypto assets instantly with direct Naira settlement.",
     color: "text-blue-500",
     gradient: "from-blue-500/20 to-blue-500/0",
   },
   {
     icon: LineChart,
-    title: "Competitive Rates",
+    title: "Deep Liquidity",
     description:
-      "Benefit from our industry-leading exchange rates with spreads as low as 0.1% on major currency pairs.",
-
-    color: "text-green-500",
-    gradient: "from-green-500/20 to-green-500/0",
+      "Trade any volume with confidence. Our platform ensures minimal slippage and the most competitive rates in Nigeria.",
+    color: "text-emerald-500",
+    gradient: "from-emerald-500/20 to-emerald-500/0",
   },
   {
-    icon: Shield,
-    title: "Secure Transactions",
+    icon: Lock,
+    title: "Institutional Security",
     description:
-      "Every transaction is protected with bank-grade security and real-time fraud monitoring.",
+      "Your assets are protected by multi-sig cold storage, 2FA, and bank-grade encryption protocols.",
     color: "text-purple-500",
     gradient: "from-purple-500/20 to-purple-500/0",
   },
   {
-    icon: CreditCard,
-    title: "Virtual Cards",
+    icon: Wallet,
+    title: "Naira Fiat Wallet",
     description:
-      "Create secure virtual cards for easy online spending, safer transactions, and seamless financial management.",
+      "Seamlessly deposit and withdraw Naira. Fund your account via bank transfer and start trading in under 60 seconds.",
     color: "text-pink-500",
     gradient: "from-pink-500/20 to-pink-500/0",
   },
   {
-    icon: PiggyBank,
-    title: "Great Rates",
+    icon: History,
+    title: "Automated Settlements",
     description:
-      "Get the best exchange rates with minimal fees on all your transactions, saving you more.",
+      "Every trade is processed automatically. Get your crypto or Naira delivered to your wallet without manual delays.",
     color: "text-orange-500",
     gradient: "from-orange-500/20 to-orange-500/0",
   },
@@ -97,12 +95,12 @@ export default function FeaturesSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Everything you need to send money globally
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Powerful features for the modern trader
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Experience the future of international money transfers with our
-            comprehensive suite of features
+            Kambit provides a secure, high-speed infrastructure designed to make 
+            crypto trading accessible to every Nigerian.
           </p>
         </motion.div>
 
@@ -121,7 +119,7 @@ export default function FeaturesSection() {
                 variants={itemVariants}
                 className="relative group"
               >
-                <div className="relative overflow-hidden rounded-2xl p-8 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <div className="relative overflow-hidden rounded-2xl p-8 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors h-full border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
                   {/* Gradient background */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity`}
@@ -130,14 +128,14 @@ export default function FeaturesSection() {
                   {/* Content */}
                   <div className="relative">
                     <div
-                      className={`inline-flex p-3 rounded-lg ${feature.color} bg-white dark:bg-gray-900 mb-4`}
+                      className={`inline-flex p-3 rounded-lg ${feature.color} bg-white dark:bg-gray-900 mb-4 shadow-sm`}
                     >
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -157,10 +155,10 @@ export default function FeaturesSection() {
           <Button
             size="lg"
             asChild
-            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-8"
           >
-            <Link href="/services">
-              View All Features <ArrowRight className="ml-2 w-4 h-4" />
+            <Link href="/dashboard">
+              Start Trading Now <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
         </motion.div>

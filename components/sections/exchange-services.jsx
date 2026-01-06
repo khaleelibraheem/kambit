@@ -12,25 +12,25 @@ import {
 
 const services = [
   {
-    title: "Spot Exchange",
-    description: "Instant currency exchange at current market rates",
+    title: "Spot Trading",
+    description: "Instant crypto-to-Naira trading at live market rates",
     icon: Repeat,
     features: [
-      "Real-time exchange rates",
+      "Real-time crypto prices",
       "Zero hidden fees",
-      "Instant transfers",
-      "Competitive spreads",
+      "Instant trade execution",
+      "Competitive Naira spreads",
     ],
     color: "text-blue-500",
     gradient: "from-blue-500/20 to-blue-500/0",
   },
   {
-    title: "Multi-Currency Wallet",
-    description: "Hold and manage multiple currencies in one account",
+    title: "Digital Asset Wallet",
+    description: "Securely hold your crypto and Naira in one place",
     icon: Wallet,
     features: [
-      "Hold 5 major currencies",
-      "Free internal transfers",
+      "BTC, USDT, ETH, SOL support",
+      "Naira fiat wallet",
       "Real-time balance updates",
       "Secure fund management",
     ],
@@ -38,53 +38,53 @@ const services = [
     gradient: "from-purple-500/20 to-purple-500/0",
   },
   {
-    title: "Business Exchange",
-    description: "Tailored solutions for business currency needs",
+    title: "OTC Desk",
+    description: "High-volume solutions for institutional traders",
     icon: Building2,
     features: [
       "Volume-based rates",
-      "Batch processing",
-      "API integration",
-      "Dedicated support",
+      "Priority settlements",
+      "API trading access",
+      "Personal account manager",
     ],
     color: "text-indigo-500",
     gradient: "from-indigo-500/20 to-indigo-500/0",
   },
   {
-    title: "Currency Conversion",
-    description: "Easy currency conversion with live rates",
+    title: "Market Insights",
+    description: "Track price movements with live data feeds",
     icon: ArrowRightLeft,
     features: [
-      "Live exchange rates",
-      "Rate alerts",
-      "Price history",
-      "Market analysis",
+      "Live NGN/Crypto rates",
+      "Price change alerts",
+      "Market trend analysis",
+      "Historical data tracking",
     ],
     color: "text-green-500",
     gradient: "from-green-500/20 to-green-500/0",
   },
   {
-    title: "International Transfers",
-    description: "Send money across borders efficiently",
+    title: "Instant Settlements",
+    description: "Withdraw profits to your bank account instantly",
     icon: Globe,
     features: [
-      "Fast processing",
-      "Track transfers",
-      "Competitive rates",
-      "Secure transfers",
+      "Fast bank processing",
+      "Real-time tracking",
+      "24/7 payout access",
+      "Automated payouts",
     ],
     color: "text-orange-500",
     gradient: "from-orange-500/20 to-orange-500/0",
   },
   {
-    title: "Secure Transactions",
-    description: "Bank-grade security for all exchanges",
+    title: "Institutional Security",
+    description: "Bank-grade protection for your digital assets",
     icon: Shield,
     features: [
-      "End-to-end encryption",
+      "Cold storage vaults",
       "2FA authentication",
-      "Transaction monitoring",
-      "Fraud protection",
+      "Real-time monitoring",
+      "Multi-sig protection",
     ],
     color: "text-red-500",
     gradient: "from-red-500/20 to-red-500/0",
@@ -103,11 +103,11 @@ export default function ExchangeServices() {
           className="max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Comprehensive Exchange Services
+            Comprehensive Trading Services
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Everything you need for seamless currency exchange between USD, GBP,
-            EUR, NGN, and INR.
+            Everything you need for seamless digital asset trading between BTC, 
+            USDT, ETH, SOL, and Naira.
           </p>
         </motion.div>
 

@@ -1,4 +1,3 @@
-// components/sections/cta.js
 "use client";
 
 import { motion } from "framer-motion";
@@ -7,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const benefits = [
-  "Five major currencies supported",
-  "Real-time exchange rates",
-  "Instant currency conversion",
-  "Competitive spreads",
-  "Secure transactions",
-  "24/7 customer support",
+  "BTC, USDT, ETH, & SOL supported",
+  "Real-time Naira market rates",
+  "Instant crypto buy & sell",
+  "Zero hidden trading fees",
+  "Secure bank-grade encryption",
+  "24/7 dedicated human support",
 ];
 
 export default function CTASection() {
@@ -38,12 +37,12 @@ export default function CTASection() {
             className="flex-1 text-center lg:text-left"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
-              Ready to start sending money globally?
+              Ready to trade crypto for Naira?
             </h2>
             <p className="text-base sm:text-lg text-indigo-100 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
-              Join thousands of satisfied customers who trust us with their
-              international transfers. Get started today and experience the
-              difference.
+              Join thousands of satisfied traders who trust Kambit for instant 
+              crypto settlements. Start buying and selling digital assets today 
+              and experience the difference.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
@@ -73,7 +72,7 @@ export default function CTASection() {
                 asChild
               >
                 <Link href="/sign-up">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                  Start Trading <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button
@@ -82,7 +81,7 @@ export default function CTASection() {
                 className="border-white text-indigo-600 hover:bg-white/10 hover:text-white dark:bg-white dark:hover:bg-white/10"
                 asChild
               >
-                <Link href="/contact">Contact Sales</Link>
+                <Link href="/prices">View Live Rates</Link>
               </Button>
             </div>
           </motion.div>
@@ -98,9 +97,9 @@ export default function CTASection() {
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-white/20">
               <div className="grid grid-cols-2 gap-4 sm:gap-8">
                 {[
-                  { value: "$5B+", label: "Transferred" },
-                  { value: "180+", label: "Countries" },
-                  { value: "99.9%", label: "Success Rate" },
+                  { value: "₦10B+", label: "Trade Volume" },
+                  { value: "10k+", label: "Active Users" },
+                  { value: "< 5m", label: "Settlement" },
                   { value: "24/7", label: "Support" },
                 ].map((stat, index) => (
                   <div

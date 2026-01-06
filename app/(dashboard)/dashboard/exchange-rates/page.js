@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
   ArrowDown,
   ArrowUp,
   RefreshCcw,
   AlertTriangle,
-  TrendingUp,
-  Clock,
-  LineChart,
+  Activity,
+  Zap,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -32,149 +31,152 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useHistoricalRates } from "@/app/hooks/useExchangeRates";
 import staticRates from "@/lib/mock-data/static-rates";
 
-const supportedCurrencies = ["USD", "GBP", "EUR", "NGN", "INR"];
+const supportedAssets = ["USDT", "BTC", "ETH", "SOL", "NGN"];
 
-const RateCardSkeleton = () => (
-  <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6">
-    <div className="flex justify-between items-center mb-4">
-      <Skeleton className="h-6 w-20" />
-      <Skeleton className="h-4 w-16" />
-    </div>
-    <Skeleton className="h-10 w-32 mb-4" />
-    <Skeleton className="h-4 w-24" />
-  </div>
-);
-
-export default function ExchangeRates() {
-  const [baseCurrency, setBaseCurrency] = useState("USD");
-  const [selectedCurrency, setSelectedCurrency] = useState("EUR");
+export default function MarketPrices() {
+  const [baseAsset, setBaseAsset] = useState("USDT");
+  const [selectedAsset, setSelectedAsset] = useState("NGN");
   const [currentTime, setCurrentTime] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const {
     data: historicalRates,
     isLoading: loadingHistory,
     isError: historyError,
-  } = useHistoricalRates(baseCurrency, selectedCurrency, 30);
+  } = useHistoricalRates(baseAsset, selectedAsset, 30);
 
   useEffect(() => {
     setMounted(true);
     setCurrentTime(new Date().toLocaleTimeString());
     const timer = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
+    }, 30000);
     return () => clearInterval(timer);
   }, []);
 
-  // Calculate rate change (mock data - updates every second)
-  const getRateChange = () => {
-    if (!mounted) return { value: 0, trend: "up" }; // Default values for server-side rendering
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => setIsRefreshing(false), 800);
+  };
+
+  const formatRate = (value) => {
+    if (value >= 1000)
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    if (value < 0.0001) return value.toFixed(8);
+    return value.toFixed(4);
+  };
+
+  const getRateChange = (asset) => {
+    if (!mounted) return { value: 0, trend: "up" };
+    const val = (Math.random() * 4 - 2).toFixed(2);
     return {
-      value: Math.random() * 2 - 1, // Random value between -1 and 1
-      trend: Math.random() > 0.5 ? "up" : "down",
+      value: Math.abs(val),
+      trend: val >= 0 ? "up" : "down",
     };
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Exchange Rates
+          <h1 className="font-heading text-2xl font-bold text-gray-900 dark:text-white">
+            Market Prices
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Live currency rates and historical data
-          </p>
+          <div className="flex items-center gap-2 mt-1">
+            <p className="text-sm text-gray-500">Live analytics</p>
+            <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-400 px-2 py-0.5 rounded uppercase font-bold tracking-tighter">
+              Last Sync: {currentTime}
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Select value={baseCurrency} onValueChange={setBaseCurrency}>
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Base Currency" />
-            </SelectTrigger>
-            <SelectContent>
-              {supportedCurrencies.map((currency) => (
-                <SelectItem key={currency} value={currency}>
-                  {currency}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 bg-white dark:bg-gray-800 border rounded-lg px-3 py-1.5 shadow-sm">
+            <span className="text-xs font-semibold text-gray-400 uppercase">
+              Base:
+            </span>
+            <Select value={baseAsset} onValueChange={setBaseAsset}>
+              <SelectTrigger className="w-24 border-none shadow-none focus:ring-0 h-7 text-sm font-bold">
+                <SelectValue placeholder="Asset" />
+              </SelectTrigger>
+              <SelectContent>
+                {supportedAssets.map((asset) => (
+                  <SelectItem key={asset} value={asset}>
+                    {asset}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           <Button
             variant="outline"
             size="icon"
-            onClick={() => refetch()}
-            className="animate-spin"
+            onClick={handleRefresh}
+            className={isRefreshing ? "animate-spin" : ""}
           >
             <RefreshCcw className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* Exchange Rates Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-        {supportedCurrencies
-          .filter((curr) => curr !== baseCurrency)
-          .map((currency) => {
-            const rate = staticRates[baseCurrency][currency];
-            const change = getRateChange();
+      {/* Optimized Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {supportedAssets
+          .filter((curr) => curr !== baseAsset)
+          .map((asset) => {
+            const rate = staticRates[baseAsset]?.[asset] || 0;
+            const change = getRateChange(asset);
 
             return (
               <motion.div
-                key={currency}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                key={asset}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 className="cursor-pointer"
-                onClick={() => setSelectedCurrency(currency)}
+                onClick={() => setSelectedAsset(asset)}
               >
                 <Card
-                  className={`hover:shadow-lg transition-shadow ${
-                    selectedCurrency === currency
-                      ? "ring-2 ring-indigo-500 dark:ring-indigo-400"
-                      : ""
+                  className={`transition-all duration-200 border-gray-100 dark:border-gray-800 ${
+                    selectedAsset === asset
+                      ? "ring-2 ring-indigo-500 border-transparent shadow-md"
+                      : "hover:border-gray-200 dark:hover:border-gray-700"
                   }`}
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-5">
                     <div className="flex items-center justify-between mb-4">
-                      <CardHeader className="p-0">
-                        <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                          {baseCurrency}/{currency}
-                        </CardTitle>
-                      </CardHeader>
+                      <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                        {baseAsset} / {asset}
+                      </span>
                       <div
-                        className={`flex items-center gap-1 ${
+                        className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md ${
                           change.trend === "up"
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-red-600 dark:text-red-400"
+                            ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20"
+                            : "bg-rose-50 text-rose-600 dark:bg-rose-900/20"
                         }`}
                       >
                         {change.trend === "up" ? (
-                          <ArrowUp className="w-4 h-4" />
+                          <ArrowUp className="w-3 h-3" />
                         ) : (
-                          <ArrowDown className="w-4 h-4" />
+                          <ArrowDown className="w-3 h-3" />
                         )}
-                        <span className="text-sm font-medium">
-                          {change.value.toFixed(2)}%
-                        </span>
+                        {change.value}%
                       </div>
                     </div>
-                    <div className="flex items-end gap-2 mb-4">
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-                        {rate.toFixed(4)}
+
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xl font-bold text-gray-900 dark:text-white">
+                        {formatRate(rate)}
                       </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                        {currency}
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">
+                        {asset}
                       </span>
                     </div>
-
-                    {currentTime && (
-                      <CardDescription className="text-[12px] text-gray-500 dark:text-gray-400">
-                        Last updated: {currentTime}
-                      </CardDescription>
-                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -182,30 +184,34 @@ export default function ExchangeRates() {
           })}
       </div>
 
-      {/* Historical Chart */}
-      <Card className="mb-12">
-        <CardHeader>
-          <CardTitle>Historical Rates</CardTitle>
-          <CardDescription>
-            30-day price history for {baseCurrency}/{selectedCurrency}
-          </CardDescription>
+      {/* Analytics Card */}
+      <Card className="shadow-sm border-gray-100 dark:border-gray-800">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+          <div>
+            <CardTitle className="text-lg font-bold">Price Analytics</CardTitle>
+            <CardDescription>
+              30-day volatility data for {baseAsset}/{selectedAsset}
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-1 px-2 py-1 bg-indigo-50 dark:bg-indigo-900/30 rounded text-[10px] font-bold text-indigo-600 border border-indigo-100 dark:border-indigo-800">
+            <Activity className="w-3 h-3" /> LIVE
+          </div>
         </CardHeader>
         <CardContent className="p-0 sm:p-6">
           {historyError ? (
-            <div className="text-center text-red-500 dark:text-red-400 py-8">
-              <AlertTriangle className="h-8 w-8 mx-auto mb-2" />
-              <p>Error loading historical data. Please try again later.</p>
+            <div className="text-center py-12 text-gray-400 text-sm italic">
+              Historical data unavailable for this pair.
             </div>
           ) : loadingHistory ? (
-            <div className="h-[300px] sm:h-[400px] lg:h-[500px] flex items-center justify-center">
-              <Skeleton className="w-full h-full" />
+            <div className="h-[300px] flex items-center justify-center">
+              <Skeleton className="w-[95%] h-[250px] rounded-xl" />
             </div>
           ) : (
             historicalRates && (
               <div className="w-full">
                 <RateChart
                   data={historicalRates}
-                  currency={`${baseCurrency}/${selectedCurrency}`}
+                  currency={`${baseAsset}/${selectedAsset}`}
                 />
               </div>
             )
@@ -213,37 +219,32 @@ export default function ExchangeRates() {
         </CardContent>
       </Card>
 
-      {/* Market Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Quick Insights */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
+          { icon: Zap, title: "Instant Settlement", desc: "Avg payout: < 5m" },
           {
-            icon: TrendingUp,
-            title: "Market Trends",
-            description: "Daily analysis of currency movements",
+            icon: Activity,
+            title: "Deep Liquidity",
+            desc: "Ready for high volume",
           },
-          {
-            icon: Clock,
-            title: "Market Hours",
-            description: "24/7 forex market monitoring",
-          },
-          {
-            icon: LineChart,
-            title: "Price Alerts",
-            description: "Set up notifications for rate changes",
-          },
+          { icon: Bell, title: "Price Alerts", desc: "Available in settings" },
         ].map((feature, index) => (
-          <Card key={index}>
+          <Card
+            key={index}
+            className="bg-gray-50/50 dark:bg-gray-900/20 border-none"
+          >
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg">
-                  <feature.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                <div className="p-2.5 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                  <feature.icon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-white">
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    {feature.description}
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                    {feature.desc}
                   </p>
                 </div>
               </div>

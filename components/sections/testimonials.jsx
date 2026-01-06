@@ -6,28 +6,28 @@ import { Star, Quote } from "lucide-react";
 const testimonials = [
   {
     content:
-      "The exchange rates are consistently better than my bank, and the transfers are lightning fast!",
-    author: "Sarah Johnson",
-    role: "International Business Owner",
-    location: "United Kingdom",
+      "Kambit is a game changer for my USDT trades. The Naira settlements are actually instant—usually hitting my bank in less than 3 minutes.",
+    author: "Chidi Okoro",
+    role: "P2P Merchant",
+    location: "Lagos, Nigeria",
     rating: 5,
-    image: "/avatars/avatar-1.jpg", // You'll need to add actual images
+    image: "/avatars/avatar-1.jpg",
   },
   {
     content:
-      "Being able to hold multiple currencies and exchange them instantly has transformed my import business.",
-    author: "Rahul Patel",
-    role: "Import/Export Manager",
-    location: "India",
+      "I've used many platforms, but Kambit's rates for buying Solana and Bitcoin are consistently the best in the market. No hidden fees at all.",
+    author: "Amara Williams",
+    role: "Crypto Investor",
+    location: "Abuja, Nigeria",
     rating: 5,
     image: "/avatars/avatar-2.jpg",
   },
   {
     content:
-      "The best platform for sending money home. The NGN rates are always competitive.",
-    author: "Oluwaseun Adebayo",
-    role: "Healthcare Professional",
-    location: "Nigeria",
+      "The interface is so clean. Selling my ETH for Naira was seamless, and the customer support team actually responds within seconds.",
+    author: "Tunde Bakare",
+    role: "Tech Professional",
+    location: "Port Harcourt, Nigeria",
     rating: 5,
     image: "/avatars/avatar-3.jpg",
   },
@@ -45,15 +45,14 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-            Testimonials
+          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">
+            User Stories
           </span>
-          <h2 className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-            Trusted by thousands of users worldwide
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+            Trusted by thousands of Nigerian traders
           </h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            Don&apos;t just take our word for it - hear what our satisfied customers
-            have to say
+            See why Kambit is becoming the preferred choice for buying and selling crypto assets.
           </p>
         </motion.div>
 
@@ -66,10 +65,10 @@ export default function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative p-8 bg-gray-50 dark:bg-gray-800 rounded-2xl"
+              className="relative p-8 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-transparent hover:border-indigo-500/20 transition-all duration-300"
             >
               {/* Quote Icon */}
-              <Quote className="absolute top-6 right-6 w-10 h-10 text-indigo-500/20" />
+              <Quote className="absolute top-6 right-6 w-10 h-10 text-indigo-500/10" />
 
               {/* Content */}
               <div className="relative z-10">
@@ -78,25 +77,26 @@ export default function TestimonialsSection() {
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star
                       key={i}
-                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                      className="w-4 h-4 fill-amber-400 text-amber-400"
                     />
                   ))}
                 </div>
 
                 {/* Testimonial */}
-                <blockquote className="text-gray-700 dark:text-gray-300 mb-6">
-                  {testimonial.content}
+                <blockquote className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed italic">
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700" />
+                <div className="flex items-center gap-4 border-t border-gray-200 dark:border-gray-700 pt-6">
+                  {/* Placeholder for avatar */}
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-sky-500 flex-shrink-0" />
                   <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="font-bold text-gray-900 dark:text-white">
                       {testimonial.author}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {testimonial.role}
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {testimonial.role} • {testimonial.location}
                     </div>
                   </div>
                 </div>
@@ -113,17 +113,20 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-full">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-emerald-50 dark:bg-emerald-900/10 rounded-full border border-emerald-100 dark:border-emerald-900/30">
             <div className="flex -space-x-2">
               {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700"
+                  className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-700"
                 />
               ))}
+              <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-indigo-600 flex items-center justify-center text-[10px] text-white font-bold">
+                +10k
+              </div>
             </div>
-            <span className="text-sm font-medium text-green-800 dark:text-green-400">
-              Join 50k+ happy customers
+            <span className="text-sm font-semibold text-emerald-800 dark:text-emerald-400">
+              Join 10,000+ active traders on Kambit
             </span>
           </div>
         </motion.div>

@@ -1,25 +1,40 @@
-import React from "react";
-import { DollarSign, Globe } from "lucide-react";
+"use client";
 
-const Logo = () => {
+import Image from "next/image";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+/**
+ * Kambit Branding Logo
+ * @param {string} className - Additional Tailwind classes
+ * @param {boolean} iconOnly - Whether to hide the "Kambit" text
+ */
+const Logo = ({ className = "", iconOnly = false }) => {
   return (
-    <div className="group inline-flex items-center gap-3 rounded-lg transition-all duration-300">
-      {/* Icon container */}
-      <div className="relative w-8 h-8 flex items-center justify-center">
-        <Globe className="absolute w-6 h-6 text-gray-900 dark:text-gray-100 transform transition-all duration-300 group-hover:scale-90 group-hover:opacity-0" />
-        <DollarSign className="absolute w-6 h-6 text-blue-500 transform transition-all duration-300 scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100" />
+    <Link
+      href="/dashboard"
+      className={cn(
+        "flex items-center gap-2.5 group transition-all duration-300 w-fit",
+        className
+      )}
+    >
+      {/* Icon Container */}
+      <div className="relative flex items-center justify-center">
+        <Image
+          src="/logo.png"
+          width={32}
+          height={32}
+          alt="Kambit Logo Icon"
+          className="object-contain transition-transform duration-500"
+        />
       </div>
 
-      {/* Text container */}
-      <div className="flex flex-col items-start">
-        <span className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
-          Abuja
+      {!iconOnly && (
+        <span className="font-heading text-xl font-bold tracking-tighter text-slate-900 dark:text-white  transition-colors duration-300">
+          Kambit
         </span>
-        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-          Bureau De Change
-        </span>
-      </div>
-    </div>
+      )}
+    </Link>
   );
 };
 

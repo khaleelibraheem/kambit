@@ -1,14 +1,30 @@
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/layout/navbar";
-import { RootWrapper } from "@/components/layout/root-wrapper";
-import "./globals.css";
-import Providers from "./providers";
-import { BankingProvider } from "@/contexts/BankingContext";
 import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+// Components & Providers
+import { ThemeProvider } from "@/components/theme-provider";
+import { BankingProvider } from "@/contexts/BankingContext";
+import { RootWrapper } from "@/components/layout/root-wrapper";
+import Navbar from "@/components/layout/navbar";
+import Providers from "./providers";
+
+// Styles
+import "./globals.css";
+
+// Configure Body Font
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: 'swap',
+});
+
+// Configure Heading Font
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: 'swap',
+});
 
 export const viewport = {
   width: "device-width",
@@ -20,124 +36,65 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL("https://abujabureaudechange.vercel.app"),
-  canonical: "https://abujabureaudechange.vercel.app",
-
+  alternates: {
+    canonical: "/",
+  },
   title: {
-    template: "%s | Abuja Bureau De Change",
-    default: "Abuja Bureau De Change - Premium Currency Exchange Services",
+    template: "%s | Kambit",
+    default: "Kambit - Buy, Sell & Trade Crypto for Naira Instantly",
   },
   description:
-    "Premium currency exchange services in Nigeria. Exchange USD, GBP, EUR, NGN, and INR with real-time rates and instant processing.",
-
+    "Kambit is Nigeria's premier fintech for trading BTC, USDT, ETH, and SOL. Buy and sell crypto instantly with the best market rates and secure Naira settlements.",
   keywords: [
-    "currency exchange",
-    "bureau de change",
-    "forex",
-    "nigeria",
-    "abuja",
-    "usd to ngn",
-    "gbp to ngn",
-    "eur to ngn",
+    "Kambit",
+    "Buy Bitcoin Nigeria",
+    "Sell USDT for Naira",
+    "Trade Solana Nigeria",
+    "Ethereum to Naira",
+    "Crypto trading app Nigeria",
+    "Buy USDT with Naira",
   ],
-
-  applicationName: "Abuja Bureau De Change",
-
+  applicationName: "Kambit",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "Kambit",
+    statusBarStyle: "default",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://abujabureaudechange.vercel.app",
-    title: "Abuja Bureau De Change - Premium Currency Exchange Services",
-    description: "Premium currency exchange services in Nigeria",
-    siteName: "Abuja Bureau De Change",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Abuja Bureau De Change",
-      },
-    ],
+    title: "Kambit - Instant Crypto Trading",
+    description: "Securely buy and sell BTC, USDT, and other assets with Naira.",
+    siteName: "Kambit",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Kambit Crypto Platform" }],
   },
-
   twitter: {
     card: "summary_large_image",
-    title: "Abuja Bureau De Change - Premium Currency Exchange Services",
-    description: "Premium currency exchange services in Nigeria",
+    title: "Kambit | Crypto Trading Nigeria",
+    description: "The fastest way to buy and sell crypto for Naira.",
     images: ["/og-image.png"],
   },
-
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
       { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
-      {
-        url: "/icon-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
-      },
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: "default",
-      title: "Abuja Bureau De Change",
-      startupImage: [
-        {
-          url: "/splash.html",
-          media:
-            "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
-        },
-        {
-          url: "/splash.html",
-          media:
-            "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)",
-        },
-        {
-          url: "/splash.html",
-          media:
-            "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)",
-        },
-        {
-          url: "/splash.html",
-          media:
-            "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)",
-        },
-      ],
-    },
-  },
-
-  manifest: "/manifest.json",
-
-  appleWebApp: {
-    capable: true,
-    title: "Abuja Bureau De Change",
-    statusBarStyle: "default",
-  },
-
-  formatDetection: {
-    telephone: false,
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content="#4F46E5" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-          />
-        </head>
-        <body className={inter.className}>
+      <html 
+        lang="en" 
+        suppressHydrationWarning 
+        className={`${inter.variable} ${jakarta.variable}`}
+      >
+        <body className="font-sans antialiased">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -145,13 +102,13 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             <Providers>
-              <RootWrapper>
-                <BankingProvider>
+              <BankingProvider>
+                <RootWrapper>
                   <Navbar />
-                  {children}
-                  <Toaster position="top-center" />
-                </BankingProvider>
-              </RootWrapper>
+                  <main className="min-h-screen">{children}</main>
+                  <Toaster position="top-center" richColors closeButton />
+                </RootWrapper>
+              </BankingProvider>
             </Providers>
           </ThemeProvider>
         </body>

@@ -5,34 +5,34 @@ import { motion } from "framer-motion";
 const timeline = [
   {
     year: "2018",
-    title: "Company Founded",
+    title: "The Vision Began",
     description:
-      "Started with a vision to revolutionize international money transfers",
+      "Founded with a mission to simplify digital asset access for the Nigerian market.",
   },
   {
     year: "2019",
-    title: "Expansion Phase",
-    description: "Expanded services to cover major African and Asian markets",
+    title: "Liquidity Expansion",
+    description: "Established deep liquidity pools for major assets like BTC and USDT.",
   },
   {
     year: "2020",
-    title: "Digital Transformation",
-    description: "Launched our mobile app and enhanced digital capabilities",
+    title: "Instant Settlement Launch",
+    description: "Developed our proprietary system for automated, instant Naira payouts.",
   },
   {
     year: "2021",
-    title: "Global Recognition",
-    description: "Received multiple awards for innovation in fintech",
+    title: "Security Scaling",
+    description: "Integrated institutional-grade cold storage and advanced encryption protocols.",
   },
   {
     year: "2022",
-    title: "Strategic Partnerships",
-    description: "Formed key partnerships with major financial institutions",
+    title: "Asset Expansion",
+    description: "Expanded our ecosystem to support high-speed trading for Ethereum and Solana.",
   },
   {
     year: "2023",
-    title: "Market Leader",
-    description: "Became one of the leading money transfer services in Africa",
+    title: "Becoming Kambit",
+    description: "Officially rebranded as Kambit, solidifying our place as the fastest crypto-to-Naira gateway.",
   },
 ];
 
@@ -51,9 +51,9 @@ export default function OurStory() {
             Our Story
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            From our humble beginnings to becoming a trusted name in global
-            money transfers, our journey has been driven by innovation and
-            customer trust.
+            From our early days in the crypto space to becoming a trusted name in 
+            digital asset trading, our journey has been driven by speed, security, 
+            and the trust of our users.
           </p>
         </motion.div>
 

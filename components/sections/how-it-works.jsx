@@ -1,36 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { UserPlus, ArrowLeftRight, Send, Wallet } from "lucide-react";
+import { UserPlus, ArrowLeftRight, Banknote, Wallet } from "lucide-react";
 
 const steps = [
   {
     icon: UserPlus,
-    title: "Create Your Account",
+    title: "Join Kambit",
     description:
-      "Sign up and verify your identity to start exchanging currencies instantly.",
-    color: "bg-blue-500",
+      "Create your account and complete a quick verification to secure your trading wallet.",
+    color: "text-blue-500",
   },
   {
     icon: Wallet,
-    title: "Fund Your Account",
+    title: "Fund Your Wallet",
     description:
-      "Add funds in any of our supported currencies - USD, GBP, EUR, NGN, or INR.",
-    color: "bg-green-500",
+      "Deposit Naira via bank transfer or send crypto directly to your secure Kambit wallet.",
+    color: "text-emerald-500",
   },
   {
     icon: ArrowLeftRight,
-    title: "Exchange Currency",
+    title: "Buy or Sell",
     description:
-      "Convert between currencies at competitive rates with real-time market prices.",
-    color: "bg-indigo-500",
+      "Trade BTC, USDT, ETH, or SOL instantly at the best market rates with a single click.",
+    color: "text-indigo-500",
   },
   {
-    icon: Send,
-    title: "Transfer or Withdraw",
+    icon: Banknote,
+    title: "Instant Cash Out",
     description:
-      "Send your exchanged currency to any bank account or withdraw to your local bank.",
-    color: "bg-purple-500",
+      "Withdraw your profits directly to your local Nigerian bank account in under 5 minutes.",
+    color: "text-purple-500",
   },
 ];
 
@@ -46,17 +46,17 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Get started in minutes
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Start trading in 4 simple steps
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Follow these simple steps to start sending money globally with ease
-            and confidence
+            We&apos;ve simplified crypto trading so you can focus on building your 
+            wealth without the technical hurdles.
           </p>
         </motion.div>
 
         {/* Steps */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -68,28 +68,23 @@ export default function HowItWorksSection() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="relative"
               >
-                {/* Connector Line */}
+                {/* Connector Line (Hidden on mobile) */}
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-16 left-1/2 w-full h-0.5 bg-gray-200 dark:bg-gray-700" />
+                  <div className="hidden lg:block absolute top-10 left-1/2 w-full h-0.5 bg-gray-200 dark:bg-gray-700 -z-0" />
                 )}
 
-                <div className="relative flex flex-col items-center">
-                  {/* Step Number */}
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg mb-6">
-                    <Icon
-                      className={`w-6 h-6 ${step.color.replace(
-                        "bg-",
-                        "text-"
-                      )}`}
-                    />
+                <div className="relative z-10 flex flex-col items-center">
+                  {/* Icon Container */}
+                  <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-white dark:bg-gray-800 shadow-xl shadow-gray-200/50 dark:shadow-none mb-6 border border-gray-100 dark:border-gray-700">
+                    <Icon className={`w-8 h-8 ${step.color}`} />
                   </div>
 
                   {/* Step Content */}
                   <div className="text-center">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                       {step.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                       {step.description}
                     </p>
                   </div>
