@@ -1,25 +1,19 @@
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
-
-// Components & Providers
-import { ThemeProvider } from "@/components/theme-provider";
 import { BankingProvider } from "@/contexts/BankingContext";
 import { RootWrapper } from "@/components/layout/root-wrapper";
 import Navbar from "@/components/layout/navbar";
 import Providers from "./providers";
-
-// Styles
 import "./globals.css";
 
-// Configure Body Font
+
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter",
   display: 'swap',
 });
 
-// Configure Heading Font
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
   variable: "--font-jakarta",
@@ -95,12 +89,7 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${jakarta.variable}`}
       >
         <body className="font-sans antialiased">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+        
             <Providers>
               <BankingProvider>
                 <RootWrapper>
@@ -110,7 +99,7 @@ export default function RootLayout({ children }) {
                 </RootWrapper>
               </BankingProvider>
             </Providers>
-          </ThemeProvider>
+       
         </body>
       </html>
     </ClerkProvider>
