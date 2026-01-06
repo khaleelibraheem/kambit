@@ -29,7 +29,7 @@ export const viewport = {
 };
 
 export const metadata = {
-  metadataBase: new URL("https://abujabureaudechange.vercel.app"),
+  metadataBase: new URL("https://kambit.vercel.app"),
   alternates: {
     canonical: "/",
   },
@@ -58,7 +58,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://abujabureaudechange.vercel.app",
+    url: "https://kambit.vercel.app",
     title: "Kambit - Instant Crypto Trading",
     description: "Securely buy and sell BTC, USDT, and other assets with Naira.",
     siteName: "Kambit",
