@@ -17,6 +17,7 @@ import {
   QrCode,
   RefreshCcw,
   Ticket,
+  Smartphone, // Added icon for Utilities
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
@@ -37,6 +38,7 @@ const sidebarSections = [
     items: [
       { title: "Send", href: "/dashboard/send", icon: SendHorizontal },
       { title: "Receive", href: "/dashboard/receive", icon: QrCode },
+      { title: "Bills & Utilities", href: "/dashboard/utilities", icon: Smartphone }, // New Nav Link
       { title: "Fund Wallet", href: "/dashboard/fund-account", icon: PlusCircle },
       { title: "Withdraw", href: "/dashboard/withdrawals", icon: Banknote },
       { title: "Transactions", href: "/dashboard/transactions", icon: History },
@@ -67,7 +69,6 @@ const NavItem = ({ item }) => {
           : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200"
       )}
     >
-      {/* Icon Container */}
       <div
         className={cn(
           "p-2 rounded-lg transition-colors flex items-center justify-center",
@@ -79,14 +80,10 @@ const NavItem = ({ item }) => {
         <item.icon className="w-4 h-4" />
       </div>
 
-      {/* Label */}
-      <span
-        className={cn("text-sm flex-1", isActive ? "font-medium" : "")}
-      >
+      <span className={cn("text-sm flex-1", isActive ? "font-medium" : "")}>
         {item.title}
       </span>
 
-      {/* Indicator */}
       <ChevronRight
         className={cn(
           "w-3.5 h-3.5 transition-all duration-300",
@@ -116,7 +113,6 @@ export function DesktopNavigationMenu() {
           </div>
         ))}
 
-        {/* Admin Section */}
         {user?.publicMetadata?.role === "admin" && (
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mx-4">
             <h3 className="font-heading px-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400/80 mb-3">

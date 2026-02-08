@@ -1,18 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import {
   User,
   Mail,
   MapPin,
-  CreditCard,
-  ShieldCheck,
   Trash2,
   UserX,
-  Building2,
-  CheckCircle2,
   Eye,
   EyeOff,
   Settings2,
@@ -22,13 +18,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -41,7 +31,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const variants = {

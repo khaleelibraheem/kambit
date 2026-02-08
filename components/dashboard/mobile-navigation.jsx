@@ -20,6 +20,7 @@ import {
   X,
   ChevronRight,
   Ticket,
+  Smartphone, // Added icon for Utilities
 } from "lucide-react";
 
 import {
@@ -40,7 +41,6 @@ const sidebarItems = [
       { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { title: "Trade Crypto", href: "/dashboard/trade", icon: Zap },
       { title: "Giftcards", href: "/dashboard/giftcards", icon: Ticket },
-
       {
         title: "Exchange Rates",
         href: "/dashboard/exchange-rates",
@@ -61,6 +61,11 @@ const sidebarItems = [
         title: "Receive Money",
         href: "/dashboard/receive",
         icon: QrCode,
+      },
+      {
+        title: "Bills & Utilities", // New Nav Link
+        href: "/dashboard/utilities",
+        icon: Smartphone,
       },
       {
         title: "Fund Wallet",
